@@ -22,3 +22,25 @@ npm ci
 npm run dev
 ```
 
+Open [http://localhost:3000](http://localhost:3000).
+
+## Verify the production build
+
+```bash
+npm run lint
+npm run typecheck
+npm run build
+```
+
+## Technology
+
+- Next.js 16
+- React 19
+- TypeScript
+- Lucide React
+- Plain responsive CSS
+
+## Contact
+
+- Email: [violettanicolaou@gmail.com](mailto:violettanicolaou@gmail.com)
+- GitHub: [ViolettaNcl](https://github.com/ViolettaNcl)
