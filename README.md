@@ -4,7 +4,7 @@ A responsive, multilingual developer CV built with Next.js, React and TypeScript
 
 ## Live demo
 
-[https://violetta-nicolaou-o0g7idiul-violettancls-projects.vercel.app/](https://violetta-nicolaou-o0g7idiul-violettancls-projects.vercel.app/)
+Production URL will be added after deployment.
 
 ## Highlights
 
