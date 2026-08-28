@@ -4,7 +4,7 @@ A responsive, multilingual developer CV built with Next.js, React and TypeScript
 
 ## Live demo
 
-[violetta-nicolaou-cv.araf01455808.chatgpt.site](https://violetta-nicolaou-o0g7idiul-violettancls-projects.vercel.app/)
+[https://violetta-nicolaou-o0g7idiul-violettancls-projects.vercel.app/](https://violetta-nicolaou-o0g7idiul-violettancls-projects.vercel.app/)
 
 ## Highlights
 
