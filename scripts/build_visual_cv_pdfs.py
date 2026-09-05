@@ -208,5 +208,5 @@ def draw_pdf(lang,outfile):
     c.showPage(); c.save()
 
 if __name__=='__main__':
-    draw_pdf('en',OUT/'Violetta_Nicolaou_CV_EN.pdf')
-    draw_pdf('ru',OUT/'Violetta_Nicolaou_CV_RU.pdf')
+    draw_pdf('en',OUT/'Violetta_Nicolaou_CV_EN_v2.pdf')
+    draw_pdf('ru',OUT/'Violetta_Nicolaou_CV_RU_v2.pdf')
