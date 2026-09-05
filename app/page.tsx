@@ -236,7 +236,7 @@ export default function Home() {
     <main id="top">
       <div className="siteShell">
         <aside className="navRail" aria-label={t.navLabel}>
-          <button className="monogram" onClick={() => navigateTo("profile")} aria-label="Violetta Nicolaou profile">VN</button>
+          <button className="monogram" onClick={() => navigateTo("profile")} aria-label="Виолетта Николау profile">VN</button>
           <div className="navList">
             {sectionIds.map((id, index) => {
               const Icon = sectionIcons[index];
@@ -263,7 +263,7 @@ export default function Home() {
           <header className="resumeHeader navSection" id="profile">
             <div className="identity">
               <p className="overline">{t.role}</p>
-              <h1>Violetta Nicolaou</h1>
+              <h1>Виолетта Николау</h1>
               <p className="summary">{t.summary}</p>
             </div>
             <div className="contactBlock" aria-label={t.contact}>
