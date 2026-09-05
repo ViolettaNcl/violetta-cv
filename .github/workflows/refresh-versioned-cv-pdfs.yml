@@ -1,0 +1,56 @@
+name: Refresh versioned CV PDFs
+
+on:
+  push:
+    branches:
+      - fix/versioned-cv-pdfs
+    paths:
+      - .github/workflows/refresh-versioned-cv-pdfs.yml
+
+permissions:
+  contents: write
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out branch
+        uses: actions/checkout@v4
+        with:
+          ref: fix/versioned-cv-pdfs
+
+      - name: Install fonts and Python dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y fonts-dejavu-core fonts-font-awesome
+          python -m pip install reportlab
+
+      - name: Switch site and generator to versioned PDF paths
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+
+          page = Path('app/page.tsx')
+          text = page.read_text(encoding='utf-8')
+          text = text.replace('Violetta_Nicolaou_CV_EN.pdf', 'Violetta_Nicolaou_CV_EN_v2.pdf')
+          text = text.replace('Violetta_Nicolaou_CV_RU.pdf', 'Violetta_Nicolaou_CV_RU_v2.pdf')
+          page.write_text(text, encoding='utf-8')
+
+          script = Path('scripts/build_visual_cv_pdfs.py')
+          text = script.read_text(encoding='utf-8')
+          text = text.replace("OUT/'Violetta_Nicolaou_CV_EN.pdf'", "OUT/'Violetta_Nicolaou_CV_EN_v2.pdf'")
+          text = text.replace("OUT/'Violetta_Nicolaou_CV_RU.pdf'", "OUT/'Violetta_Nicolaou_CV_RU_v2.pdf'")
+          script.write_text(text, encoding='utf-8')
+          PY
+
+      - name: Generate fresh English and Russian PDFs
+        run: python scripts/build_visual_cv_pdfs.py
+
+      - name: Replace old cached PDF paths
+        run: |
+          git config user.name "ViolettaNcl"
+          git config user.email "148069072+ViolettaNcl@users.noreply.github.com"
+          git rm -f public/Violetta_Nicolaou_CV_EN.pdf public/Violetta_Nicolaou_CV_RU.pdf
+          git add app/page.tsx scripts/build_visual_cv_pdfs.py public/Violetta_Nicolaou_CV_EN_v2.pdf public/Violetta_Nicolaou_CV_RU_v2.pdf
+          git commit -m "Publish refreshed CV PDFs under versioned paths"
+          git push origin HEAD:fix/versioned-cv-pdfs
