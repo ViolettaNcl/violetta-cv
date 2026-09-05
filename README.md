@@ -1,44 +1,45 @@
-# Violetta Nicolaou — CV Website
+# Виолетта Николау — Junior Full-Stack .NET Developer
 
-A responsive, multilingual developer CV built with Next.js, React and TypeScript.
+Recruiter-focused multilingual CV and portfolio for a Junior Full-Stack .NET developer with an honours programming diploma and practical end-to-end projects.
 
-## Live demo
+## Live CV
 
 [violetta-cv.vercel.app](https://violetta-cv.vercel.app)
 
-## Highlights
+## Core stack
 
-- Professional violet editorial design
-- English, Russian and Greek translations
-- Responsive navigation for desktop, tablet, mobile and browser zoom
-- Recruiter-focused projects, experience, education and skills
-- Downloadable ATS CV in PDF and DOCX formats
+- C#, .NET, ASP.NET Core, Web API, Entity Framework Core
+- SQL Server, JWT, SignalR, REST
+- TypeScript, React, Next.js, JavaScript, HTML/CSS
+- Git, GitHub Actions, Docker, automated testing
+
+## Featured engineering work
+
+### [DentalClinic](https://github.com/ViolettaNcl/DentalClinic)
+Full-stack platform developed for a dental practice: ASP.NET Core 9, EF Core, SQL Server, JWT authentication, role-based dashboards, SignalR real-time updates, background jobs, multilingual UI and AI integrations.
+
+### [Smart Route Planner](https://github.com/ViolettaNcl/smart-route-planner)
+Route-planning PWA with from-scratch MLP and K-Means implementations, route optimisation, external geodata services, automated tests and CI.
+
+### [FleetManagement](https://github.com/ViolettaNcl/FleetManagement)
+C#/WPF desktop application with SQL Server, Entity Framework, role-based workflows, layered architecture and MSTest coverage.
+
+## CV website
+
+- English, Russian and Greek versions
+- Responsive recruiter-oriented layout
+- Downloadable ATS CV
 - Accessible semantic structure and reduced-motion support
+- Built with Next.js 16, React 19 and TypeScript
 
-## Run locally
+## Verify locally
 
 ```bash
 npm ci
-npm run dev
-```
-
-Open [http://localhost:3000](http://localhost:3000).
-
-## Verify the production build
-
-```bash
 npm run lint
 npm run typecheck
 npm run build
 ```
-
-## Technology
-
-- Next.js 16
-- React 19
-- TypeScript
-- Lucide React
-- Plain responsive CSS
 
 ## Contact
 

@@ -74,7 +74,7 @@ const projects = [
 
 const skillGroups = [
   { key: "backend", items: ["C#", ".NET", "ASP.NET Core", "Web API", "EF Core", "PHP"] },
-  { key: "frontend", items: ["JavaScript", "HTML5", "CSS3", "WPF", "XAML", "PWA"] },
+  { key: "frontend", items: ["TypeScript", "React", "Next.js", "JavaScript", "HTML5", "CSS3"] },
   { key: "databases", items: ["SQL Server", "Entity Framework 6"] },
   { key: "tools", items: ["Git", "GitHub Actions", "Docker", "REST", "SignalR", "JWT"] },
   { key: "testing", items: ["MSTest", "Automated Testing", "MLP", "K-Means"] },
@@ -85,10 +85,10 @@ const copy = {
     role: "Junior Full-Stack .NET Developer",
     status: "Open to remote full-time roles",
     location: "Volgograd, Russia · UTC+3",
-    summary: "Full-stack developer with an honours programming diploma, three end-to-end portfolio projects and a multilingual customer-facing background. Strongest in C#, ASP.NET Core, SQL and tested application development.",
+    summary: "Junior full-stack developer with an honours programming diploma and hands-on delivery of a real dental-practice client project. Strongest in C#, ASP.NET Core, SQL, TypeScript/React and tested application development.",
     nav: ["Profile", "Projects", "Experience", "Skills"],
     download: "Download ATS CV",
-    highlights: ["3 portfolio projects", "132 automated tests", "3 fluent languages"],
+    highlights: ["Real client project", "132 automated tests", "3 fluent languages"],
     projects: "Selected projects",
     portfolio: "GitHub portfolio",
     live: "Live demo",
@@ -97,6 +97,10 @@ const copy = {
     skills: "Technical skills",
     skillLabels: { backend: "Backend", frontend: "Frontend", databases: "Databases", tools: "Tools", testing: "Testing & ML" },
     experience: "Experience",
+    development: "Full-Stack .NET Developer — DentalClinic",
+    developmentDates: "2026",
+    developmentOrg: "Independent client project · dental practice",
+    developmentText: "Built and documented an ASP.NET Core/EF Core/SQL Server platform with JWT auth, role-based workflows, SignalR real-time updates, background jobs, multilingual UI and external AI integrations.",
     translator: "Independent Translator",
     translatorDates: "2019 — Present",
     translatorText: "Translation and multilingual communication across Russian, English and Greek.",
@@ -121,10 +125,10 @@ const copy = {
     role: "Junior Full-Stack .NET разработчик",
     status: "Открыта к удалённой работе full-time",
     location: "Волгоград, Россия · UTC+3",
-    summary: "Full-stack разработчик с дипломом программиста с отличием, тремя end-to-end проектами и опытом международного общения. Основной стек: C#, ASP.NET Core, SQL и разработка приложений с автотестами.",
+    summary: "Junior Full-Stack .NET разработчик с дипломом программиста с отличием и практическим клиентским проектом для стоматологии. Основной стек: C#, ASP.NET Core, SQL, TypeScript/React и разработка приложений с автотестами.",
     nav: ["Профиль", "Проекты", "Опыт", "Навыки"],
     download: "Скачать ATS-CV",
-    highlights: ["3 проекта в портфолио", "132 автотеста", "3 языка свободно"],
+    highlights: ["Реальный клиентский проект", "132 автотеста", "3 языка свободно"],
     projects: "Избранные проекты",
     portfolio: "Портфолио GitHub",
     live: "Live Demo",
@@ -133,6 +137,10 @@ const copy = {
     skills: "Технические навыки",
     skillLabels: { backend: "Backend", frontend: "Frontend", databases: "Базы данных", tools: "Инструменты", testing: "Тестирование и ML" },
     experience: "Опыт работы",
+    development: "Full-Stack .NET разработчик — DentalClinic",
+    developmentDates: "2026",
+    developmentOrg: "Самостоятельный клиентский проект · стоматологическая практика",
+    developmentText: "Разработала и задокументировала платформу на ASP.NET Core/EF Core/SQL Server: JWT-авторизация, ролевые сценарии, SignalR, фоновые задачи, многоязычный интерфейс и интеграции с AI-сервисами.",
     translator: "Независимый переводчик",
     translatorDates: "2019 — сейчас",
     translatorText: "Перевод и многоязычная коммуникация на русском, английском и греческом.",
@@ -157,10 +165,10 @@ const copy = {
     role: "Junior Full-Stack .NET Developer",
     status: "Διαθέσιμη για απομακρυσμένη εργασία πλήρους απασχόλησης",
     location: "Βόλγκογκραντ, Ρωσία · UTC+3",
-    summary: "Full-stack developer με πτυχίο προγραμματισμού με άριστα, τρία ολοκληρωμένα έργα portfolio και εμπειρία εξυπηρέτησης σε πολυγλωσσικό περιβάλλον. Ισχυρότεροι τομείς: C#, ASP.NET Core, SQL και ανάπτυξη εφαρμογών με αυτοματοποιημένες δοκιμές.",
+    summary: "Junior full-stack developer με πτυχίο προγραμματισμού με άριστα και πρακτική εμπειρία σε πραγματικό έργο πελάτη για οδοντιατρείο. Ισχυρότεροι τομείς: C#, ASP.NET Core, SQL, TypeScript/React και αυτοματοποιημένες δοκιμές.",
     nav: ["Προφίλ", "Έργα", "Εμπειρία", "Δεξιότητες"],
     download: "Λήψη ATS CV",
-    highlights: ["3 έργα portfolio", "132 αυτοματοποιημένες δοκιμές", "3 γλώσσες με ευχέρεια"],
+    highlights: ["Πραγματικό έργο πελάτη", "132 αυτοματοποιημένες δοκιμές", "3 γλώσσες με ευχέρεια"],
     projects: "Επιλεγμένα έργα",
     portfolio: "Portfolio στο GitHub",
     live: "Live demo",
@@ -169,6 +177,10 @@ const copy = {
     skills: "Τεχνικές δεξιότητες",
     skillLabels: { backend: "Backend", frontend: "Frontend", databases: "Βάσεις δεδομένων", tools: "Εργαλεία", testing: "Δοκιμές & ML" },
     experience: "Επαγγελματική εμπειρία",
+    development: "Full-Stack .NET Developer — DentalClinic",
+    developmentDates: "2026",
+    developmentOrg: "Ανεξάρτητο έργο πελάτη · οδοντιατρείο",
+    developmentText: "Ανάπτυξη και τεκμηρίωση πλατφόρμας ASP.NET Core/EF Core/SQL Server με JWT, ρόλους χρηστών, SignalR, background jobs, πολύγλωσσο UI και εξωτερικές AI integrations.",
     translator: "Ανεξάρτητη μεταφράστρια",
     translatorDates: "2019 — σήμερα",
     translatorText: "Μετάφραση και πολυγλωσσική επικοινωνία στα ρωσικά, αγγλικά και ελληνικά.",
@@ -341,6 +353,11 @@ export default function Home() {
               <section className="cvSection navSection" id="experience">
                 <h2><BriefcaseBusiness />{t.experience}</h2>
                 <div className="experienceList">
+                  <article>
+                    <div><h3>{t.development}</h3><span>{t.developmentDates}</span></div>
+                    <strong>{t.developmentOrg}</strong>
+                    <p>{t.developmentText}</p>
+                  </article>
                   <article>
                     <div><h3>{t.translator}</h3><span>{t.translatorDates}</span></div>
                     <p>{t.translatorText}</p>
