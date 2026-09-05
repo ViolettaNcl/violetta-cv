@@ -1,4 +1,4 @@
-# Виолетта Николау — Junior Full-Stack .NET Developer
+# Violetta Nicolaou — Junior Full-Stack .NET Developer
 
 Recruiter-focused multilingual CV and portfolio for a Junior Full-Stack .NET developer with an honours programming diploma and practical end-to-end projects.
 
@@ -26,9 +26,10 @@ C#/WPF desktop application with SQL Server, Entity Framework, role-based workflo
 
 ## CV website
 
-- English, Russian and Greek versions
+- English, Russian and Greek interface versions
+- Correct localized name: Violetta Nicolaou / Виолетта Николау / Βιολέττα Νικολάου
+- Separate English and Russian PDF CV downloads
 - Responsive recruiter-oriented layout
-- Downloadable ATS CV
 - Accessible semantic structure and reduced-motion support
 - Built with Next.js 16, React 19 and TypeScript
 
@@ -43,5 +44,6 @@ npm run build
 
 ## Contact
 
+- Name: Violetta Nicolaou
 - Email: [violettanicolaou@gmail.com](mailto:violettanicolaou@gmail.com)
 - GitHub: [ViolettaNcl](https://github.com/ViolettaNcl)
