@@ -40,8 +40,10 @@ ICO = {
 M = 22
 CW = W - 2*M
 
+
 def wrap_text(text, font, size, width):
-    words = text.split(); lines=[]; cur=''
+    words = text.split()
+    lines=[]; cur=''
     for w in words:
         cand = w if not cur else cur+' '+w
         if stringWidth(cand, font, size) <= width:
@@ -52,6 +54,7 @@ def wrap_text(text, font, size, width):
     if cur: lines.append(cur)
     return lines
 
+
 def draw_text(c, text, x, y, width, font='DV', size=8.2, leading=10.4, color=TEXT, max_lines=None):
     c.setFillColor(color); c.setFont(font,size)
     lines = wrap_text(text,font,size,width)
@@ -59,6 +62,7 @@ def draw_text(c, text, x, y, width, font='DV', size=8.2, leading=10.4, color=TEX
     for line in lines:
         c.drawString(x,y,line); y -= leading
     return y
+
 
 def draw_bullets(c, items, x, y, width, font='DV', size=7.8, leading=9.5, gap=1.3):
     for item in items:
@@ -70,11 +74,13 @@ def draw_bullets(c, items, x, y, width, font='DV', size=7.8, leading=9.5, gap=1.
         y -= gap
     return y
 
+
 def link_text(c, label, url, x, y, font='DV', size=7.7):
     c.setFont(font,size); c.setFillColor(LINK); c.drawString(x,y,label)
     tw=stringWidth(label,font,size); c.line(x,y-1,x+tw,y-1)
     c.linkURL(url,(x,y-2,x+tw,y+size+2),relative=0,thickness=0)
     return x+tw
+
 
 def section_band(c, y, title, icon):
     h=24
@@ -83,6 +89,7 @@ def section_band(c, y, title, icon):
     c.setFillColor(white); c.setFont('FA',11); c.drawCentredString(M+13,y-h+7,ICO[icon])
     c.setFillColor(PURPLE); c.setFont('DVB',10.2); c.drawString(M+36,y-h+7,title)
     return y-h-14
+
 
 def header(c, lang):
     en = lang=='en'
@@ -107,6 +114,7 @@ def header(c, lang):
     prefixw=stringWidth(prefix,'DVB',7.4); c.setFont('DV',7.15); c.drawString(rx+20+prefixw,y,langs.split(':',1)[1].strip())
     return H-101
 
+
 def tech_cards(c,y):
     colgap=11; colw=(CW-colgap)/2
     left=[
@@ -118,20 +126,23 @@ def tech_cards(c,y):
         ('fork','Engineering','Git, GitHub Actions, Docker, REST, JWT, BCrypt, SignalR, CI/CD, Swagger/OpenAPI'),
         ('flask','Testing / ML','MSTest, unit & integration testing, browser/E2E testing, MLP, K-Means'),
     ]
-    def card(x,top,w,icon,label,value,h):
+    def card(x,top,w,icon,label,value,h,divider=83):
         c.setFillColor(LIGHT2); c.roundRect(x,top-h,w,h,4,fill=1,stroke=0)
         c.setFillColor(PURPLE); c.setFont('FA',10.5); c.drawCentredString(x+17,top-h/2-3,ICO[icon])
         c.setFillColor(PURPLE); c.setFont('DVB',7.7); c.drawString(x+36,top-16,label)
-        c.setStrokeColor(LINE); c.setLineWidth(.55); c.line(x+83,top-h+7,x+83,top-7)
+        c.setStrokeColor(LINE); c.setLineWidth(.55); c.line(x+divider,top-h+7,x+divider,top-7)
+        value_x=divider+8
         c.setFillColor(TEXT); c.setFont('DV',7.35); yy=top-13
-        for line in wrap_text(value,'DV',7.35,w-93): c.drawString(x+91,yy,line); yy-=9.1
+        for line in wrap_text(value,'DV',7.35,w-(divider+16)):
+            c.drawString(x+value_x,yy,line); yy-=9.1
     x1=M; x2=M+colw+colgap; top=y
     for ic,lab,val in left:
         h=42; card(x1,top,colw,ic,lab,val,h); top-=h+7
     leftbottom=top; top=y
     for i,(ic,lab,val) in enumerate(right):
-        h=50 if i==0 else 46; card(x2,top,colw,ic,lab,val,h); top-=h+9
+        h=50 if i==0 else 46; card(x2,top,colw,ic,lab,val,h,divider=101); top-=h+9
     return min(leftbottom,top)-2
+
 
 def draw_pdf(lang,outfile):
     en=lang=='en'; c=canvas.Canvas(str(outfile),pagesize=A4)
