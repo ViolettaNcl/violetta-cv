@@ -89,7 +89,7 @@ const copy = {
     summary: "Junior full-stack developer with an honours programming diploma and hands-on delivery of a real dental-practice client project. Strongest in C#, ASP.NET Core, SQL, TypeScript/React and tested application development.",
     nav: ["Profile", "Projects", "Experience", "Skills"],
     download: "Download PDF CV",
-    downloadFile: "Violetta_Nicolaou_CV_EN.pdf",
+    downloadFile: "Violetta_Nicolaou_CV_EN_v2.pdf",
     highlights: ["Real client project", "132 automated tests", "3 fluent languages"],
     projects: "Selected projects",
     portfolio: "GitHub portfolio",
@@ -131,7 +131,7 @@ const copy = {
     summary: "Junior Full-Stack .NET разработчик с дипломом программиста с отличием и практическим клиентским проектом для стоматологии. Основной стек: C#, ASP.NET Core, SQL, TypeScript/React и разработка приложений с автотестами.",
     nav: ["Профиль", "Проекты", "Опыт", "Навыки"],
     download: "Скачать CV в PDF",
-    downloadFile: "Violetta_Nicolaou_CV_RU.pdf",
+    downloadFile: "Violetta_Nicolaou_CV_RU_v2.pdf",
     highlights: ["Реальный клиентский проект", "132 автотеста", "3 языка свободно"],
     projects: "Избранные проекты",
     portfolio: "Портфолио GitHub",
@@ -173,7 +173,7 @@ const copy = {
     summary: "Junior full-stack developer με πτυχίο προγραμματισμού με άριστα και πρακτική εμπειρία σε πραγματικό έργο πελάτη για οδοντιατρείο. Ισχυρότεροι τομείς: C#, ASP.NET Core, SQL, TypeScript/React και αυτοματοποιημένες δοκιμές.",
     nav: ["Προφίλ", "Έργα", "Εμπειρία", "Δεξιότητες"],
     download: "Λήψη βιογραφικού σε PDF",
-    downloadFile: "Violetta_Nicolaou_CV_EN.pdf",
+    downloadFile: "Violetta_Nicolaou_CV_EN_v2.pdf",
     highlights: ["Πραγματικό έργο πελάτη", "132 αυτοματοποιημένες δοκιμές", "3 γλώσσες με ευχέρεια"],
     projects: "Επιλεγμένα έργα",
     portfolio: "Portfolio στο GitHub",
@@ -289,7 +289,7 @@ export default function Home() {
               <a href={`mailto:${EMAIL}`}><Mail size={15} />{EMAIL}</a>
               <a href="https://github.com/ViolettaNcl" target="_blank" rel="noreferrer"><Code2 size={15} />github.com/ViolettaNcl</a>
               <span><MapPin size={15} />{t.location}</span>
-              <a className="download" href={language === "ru" ? "/Violetta_Nicolaou_CV_RU.pdf" : "/Violetta_Nicolaou_CV_EN.pdf"} download={t.downloadFile}><Download size={15} />{t.download}</a>
+              <a className="download" href={language === "ru" ? "/Violetta_Nicolaou_CV_RU_v2.pdf" : "/Violetta_Nicolaou_CV_EN_v2.pdf"} download={t.downloadFile}><Download size={15} />{t.download}</a>
             </div>
             <div className="highlights" aria-label="Candidate highlights">
               {t.highlights.map((item) => <span key={item}><Check size={14} />{item}</span>)}
