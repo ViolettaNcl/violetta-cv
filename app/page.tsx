@@ -1,392 +1,455 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import dynamic from "next/dynamic";
+import Image from "next/image";
+import { useEffect, useRef, useState, type CSSProperties } from "react";
 import {
-  ArrowUpRight,
-  BriefcaseBusiness,
-  Check,
-  Code2,
-  Download,
-  ExternalLink,
-  FileUser,
-  GraduationCap,
-  Languages,
-  Mail,
-  MapPin,
-  PanelsTopLeft,
+  ArrowDown, ArrowRight, Check, Code2, Copy, Download, ExternalLink, GraduationCap, Languages, MapPin, Maximize2,
+  MessageCircle, Moon, Plus, Quote, Send, Sparkles, Sun, Volume2, VolumeX,
 } from "lucide-react";
+import CaseModal from "./CaseModal";
+import { faq, testimonials, uiCopy } from "./content-extra";
+import { applyTheme, attachSounds, blip, loadSound, loadTheme, saveSound, type Theme } from "./prefs";
+import ContactForm from "./ContactForm";
+import Terminal from "./Terminal";
+import { STAGE_EVENT, type Stage } from "./ParticleField";
+import { termCopy } from "./interactive";
+import { CountUp, Magnetic, TiltCard, Typewriter } from "./ui";
+import {
+  copy, EMAIL, GITHUB, jobs, marquee, pdf, processSteps, projects, services, skills, stats, TELEGRAM, type Language, type Project,
+} from "./content";
 
-type Language = "en" | "ru" | "el";
-type SectionId = "profile" | "projects" | "experience" | "skills";
+const ParticleField = dynamic(() => import("./ParticleField"), { ssr: false });
 
-const EMAIL = "violettanicolaou@gmail.com";
-
-const projects = [
-  {
-    title: "DentalClinic",
-    summary: {
-      en: "Full-stack system for a real dental practice with multilingual booking, role-based dashboards and real-time updates.",
-      ru: "Full-stack система для реальной стоматологии: многоязычная запись, ролевые кабинеты и обновления в реальном времени.",
-      el: "Full-stack σύστημα για πραγματικό οδοντιατρείο με πολυγλωσσικά ραντεβού, πίνακες ανά ρόλο και ενημερώσεις σε πραγματικό χρόνο.",
-    },
-    proof: {
-      en: "5 interface languages · JWT auth",
-      ru: "5 языков интерфейса · JWT-авторизация",
-      el: "5 γλώσσες διεπαφής · έλεγχος ταυτότητας JWT",
-    },
-    stack: ["C#", "ASP.NET Core 9", "EF Core", "SQL Server", "SignalR", "Docker"],
-    live: "http://www.dental-clinic.somee.com/",
-    repo: "https://github.com/ViolettaNcl/DentalClinic",
-  },
-  {
-    title: "Smart Route Planner",
-    summary: {
-      en: "Route-planning PWA with MLP neural network, K-Means clustering and evaluation tools implemented from scratch.",
-      ru: "PWA для маршрутов с нейросетью MLP, K-Means и инструментами оценки, реализованными с нуля.",
-      el: "PWA σχεδιασμού διαδρομών με νευρωνικό δίκτυο MLP, ομαδοποίηση K-Means και εργαλεία αξιολόγησης υλοποιημένα από το μηδέν.",
-    },
-    proof: {
-      en: "132 automated tests · CI pipeline",
-      ru: "132 автотеста · CI-пайплайн",
-      el: "132 αυτοματοποιημένες δοκιμές · ροή CI",
-    },
-    stack: ["PHP 8.1+", "JavaScript", "MLP", "K-Means", "OSRM", "PWA"],
-    live: "https://smart-route-planner-wiwk.onrender.com",
-    repo: "https://github.com/ViolettaNcl/smart-route-planner",
-  },
-  {
-    title: "FleetManagement",
-    summary: {
-      en: "Role-based desktop application for managing vehicles, drivers and routes with a structured data layer.",
-      ru: "Desktop-приложение с ролевым доступом для управления автомобилями, водителями и маршрутами.",
-      el: "Εφαρμογή desktop με δικαιώματα ανά ρόλο για τη διαχείριση οχημάτων, οδηγών και διαδρομών, με δομημένο επίπεδο δεδομένων.",
-    },
-    proof: {
-      en: "Layered architecture · MSTest",
-      ru: "Слоистая архитектура · MSTest",
-      el: "Πολυεπίπεδη αρχιτεκτονική · MSTest",
-    },
-    stack: ["C#", "WPF", "XAML", ".NET Framework", "EF6", "SQL Server"],
-    live: null,
-    repo: "https://github.com/ViolettaNcl/FleetManagement",
-  },
-];
-
-const skillGroups = [
-  { key: "backend", items: ["C#", ".NET", "ASP.NET Core", "Web API", "EF Core", "PHP"] },
-  { key: "frontend", items: ["TypeScript", "React", "Next.js", "JavaScript", "HTML5", "CSS3"] },
-  { key: "databases", items: ["SQL Server", "Entity Framework 6"] },
-  { key: "tools", items: ["Git", "GitHub Actions", "Docker", "REST", "SignalR", "JWT"] },
-  { key: "testing", items: ["MSTest", "Automated Testing", "MLP", "K-Means"] },
-] as const;
-
-const copy = {
-  en: {
-    name: "Violetta Nicolaou",
-    role: "Junior Full-Stack .NET Developer",
-    status: "Open to remote full-time roles",
-    location: "Volgograd, Russia · UTC+3",
-    summary: "Junior full-stack developer with an honours programming diploma and hands-on delivery of a real dental-practice client project. Strongest in C#, ASP.NET Core, SQL, TypeScript/React and tested application development.",
-    nav: ["Profile", "Projects", "Experience", "Skills"],
-    download: "Download PDF CV",
-    downloadFile: "Violetta_Nicolaou_CV_EN_v2.pdf",
-    highlights: ["Real client project", "132 automated tests", "3 fluent languages"],
-    projects: "Selected projects",
-    portfolio: "GitHub portfolio",
-    live: "Live demo",
-    source: "GitHub",
-    desktop: "Desktop app",
-    skills: "Technical skills",
-    skillLabels: { backend: "Backend", frontend: "Frontend", databases: "Databases", tools: "Tools", testing: "Testing & ML" },
-    experience: "Experience",
-    development: "Full-Stack .NET Developer — DentalClinic",
-    developmentDates: "2026",
-    developmentOrg: "Independent client project · dental practice",
-    developmentText: "Built and documented an ASP.NET Core/EF Core/SQL Server platform with JWT auth, role-based workflows, SignalR real-time updates, background jobs, multilingual UI and external AI integrations.",
-    translator: "Independent Translator",
-    translatorDates: "2019 — Present",
-    translatorText: "Translation and multilingual communication across Russian, English and Greek.",
-    reception: "Front Desk Receptionist",
-    receptionOrg: "Crowne Plaza Limassol · Cyprus",
-    receptionDates: "2020 — 2022",
-    receptionText: "Guest service, reservations, cross-team coordination and three-language interpretation.",
-    education: "Education",
-    degree: "Programmer · Honours diploma",
-    school: "Moscow International College of Digital Technologies “TOP Academy”",
-    degreeText: "09.02.07 Information Systems and Programming · July 2026",
-    languages: "Languages",
-    languageRows: [["Russian", "Fluent"], ["English", "Fluent"], ["Greek", "Fluent"], ["French", "Beginner"]],
-    strengths: "Working style",
-    strengthItems: ["Fast learner", "Disciplined & dependable", "Clear communicator", "Always on time"],
-    contact: "Contact",
-    footer: "Available for junior / entry-level Full-Stack and .NET roles.",
-    navLabel: "CV sections",
-    languageLabel: "Language",
-  },
-  ru: {
-    name: "Виолетта Николау",
-    role: "Junior Full-Stack .NET разработчик",
-    status: "Открыта к удалённой работе full-time",
-    location: "Волгоград, Россия · UTC+3",
-    summary: "Junior Full-Stack .NET разработчик с дипломом программиста с отличием и практическим клиентским проектом для стоматологии. Основной стек: C#, ASP.NET Core, SQL, TypeScript/React и разработка приложений с автотестами.",
-    nav: ["Профиль", "Проекты", "Опыт", "Навыки"],
-    download: "Скачать CV в PDF",
-    downloadFile: "Violetta_Nicolaou_CV_RU_v2.pdf",
-    highlights: ["Реальный клиентский проект", "132 автотеста", "3 языка свободно"],
-    projects: "Избранные проекты",
-    portfolio: "Портфолио GitHub",
-    live: "Live Demo",
-    source: "GitHub",
-    desktop: "Desktop-приложение",
-    skills: "Технические навыки",
-    skillLabels: { backend: "Backend", frontend: "Frontend", databases: "Базы данных", tools: "Инструменты", testing: "Тестирование и ML" },
-    experience: "Опыт работы",
-    development: "Full-Stack .NET разработчик — DentalClinic",
-    developmentDates: "2026",
-    developmentOrg: "Самостоятельный клиентский проект · стоматологическая практика",
-    developmentText: "Разработала и задокументировала платформу на ASP.NET Core/EF Core/SQL Server: JWT-авторизация, ролевые сценарии, SignalR, фоновые задачи, многоязычный интерфейс и интеграции с AI-сервисами.",
-    translator: "Независимый переводчик",
-    translatorDates: "2019 — сейчас",
-    translatorText: "Перевод и многоязычная коммуникация на русском, английском и греческом.",
-    reception: "Администратор стойки регистрации",
-    receptionOrg: "Crowne Plaza Limassol · Кипр",
-    receptionDates: "2020 — 2022",
-    receptionText: "Работа с гостями и бронированиями, координация отделов и перевод на трёх языках.",
-    education: "Образование",
-    degree: "Программист · диплом с отличием",
-    school: "Московский международный колледж цифровых технологий «Академия ТОП»",
-    degreeText: "09.02.07 Информационные системы и программирование · июль 2026",
-    languages: "Языки",
-    languageRows: [["Русский", "Свободно"], ["Английский", "Свободно"], ["Греческий", "Свободно"], ["Французский", "Начальный"]],
-    strengths: "Стиль работы",
-    strengthItems: ["Быстро учусь", "Дисциплина и надёжность", "Понятная коммуникация", "Всегда вовремя"],
-    contact: "Контакты",
-    footer: "Открыта к позициям Junior / Entry-Level Full-Stack и .NET Developer.",
-    navLabel: "Разделы CV",
-    languageLabel: "Язык",
-  },
-  el: {
-    name: "Βιολέττα Νικολάου",
-    role: "Junior Full-Stack .NET Developer",
-    status: "Διαθέσιμη για απομακρυσμένη εργασία πλήρους απασχόλησης",
-    location: "Βόλγκογκραντ, Ρωσία · UTC+3",
-    summary: "Junior full-stack developer με πτυχίο προγραμματισμού με άριστα και πρακτική εμπειρία σε πραγματικό έργο πελάτη για οδοντιατρείο. Ισχυρότεροι τομείς: C#, ASP.NET Core, SQL, TypeScript/React και αυτοματοποιημένες δοκιμές.",
-    nav: ["Προφίλ", "Έργα", "Εμπειρία", "Δεξιότητες"],
-    download: "Λήψη βιογραφικού σε PDF",
-    downloadFile: "Violetta_Nicolaou_CV_EN_v2.pdf",
-    highlights: ["Πραγματικό έργο πελάτη", "132 αυτοματοποιημένες δοκιμές", "3 γλώσσες με ευχέρεια"],
-    projects: "Επιλεγμένα έργα",
-    portfolio: "Portfolio στο GitHub",
-    live: "Live demo",
-    source: "GitHub",
-    desktop: "Εφαρμογή desktop",
-    skills: "Τεχνικές δεξιότητες",
-    skillLabels: { backend: "Backend", frontend: "Frontend", databases: "Βάσεις δεδομένων", tools: "Εργαλεία", testing: "Δοκιμές & ML" },
-    experience: "Επαγγελματική εμπειρία",
-    development: "Full-Stack .NET Developer — DentalClinic",
-    developmentDates: "2026",
-    developmentOrg: "Ανεξάρτητο έργο πελάτη · οδοντιατρείο",
-    developmentText: "Ανάπτυξη και τεκμηρίωση πλατφόρμας ASP.NET Core/EF Core/SQL Server με JWT, ρόλους χρηστών, SignalR, background jobs, πολύγλωσσο UI και εξωτερικές AI integrations.",
-    translator: "Ανεξάρτητη μεταφράστρια",
-    translatorDates: "2019 — σήμερα",
-    translatorText: "Μετάφραση και πολυγλωσσική επικοινωνία στα ρωσικά, αγγλικά και ελληνικά.",
-    reception: "Υπάλληλος υποδοχής",
-    receptionOrg: "Crowne Plaza Limassol · Κύπρος",
-    receptionDates: "2020 — 2022",
-    receptionText: "Εξυπηρέτηση επισκεπτών, κρατήσεις, συντονισμός ομάδων και διερμηνεία σε τρεις γλώσσες.",
-    education: "Εκπαίδευση",
-    degree: "Προγραμματίστρια · Πτυχίο με άριστα",
-    school: "Moscow International College of Digital Technologies «TOP Academy»",
-    degreeText: "09.02.07 Πληροφοριακά Συστήματα και Προγραμματισμός · Ιούλιος 2026",
-    languages: "Γλώσσες",
-    languageRows: [["Ρωσικά", "Με ευχέρεια"], ["Αγγλικά", "Με ευχέρεια"], ["Ελληνικά", "Με ευχέρεια"], ["Γαλλικά", "Αρχάριο επίπεδο"]],
-    strengths: "Τρόπος εργασίας",
-    strengthItems: ["Μαθαίνω γρήγορα", "Πειθαρχία και αξιοπιστία", "Σαφής επικοινωνία", "Πάντα συνεπής"],
-    contact: "Επικοινωνία",
-    footer: "Διαθέσιμη για θέσεις Junior / Entry-Level Full-Stack και .NET Developer.",
-    navLabel: "Ενότητες CV",
-    languageLabel: "Γλώσσα",
-  },
+const sections = ["home", "services", "work", "reviews", "process", "about", "playground", "faq", "contact"] as const;
+type SectionId = (typeof sections)[number];
+const navSections = ["services", "work", "process", "about", "playground", "contact"] as const;
+const stageFor: Record<SectionId, Stage> = {
+  home: "sphere", services: "knot", work: "code", reviews: "knot", process: "braces", about: "knot", playground: "braces", faq: "code", contact: "at",
 };
 
-const sectionIds: SectionId[] = ["profile", "projects", "experience", "skills"];
-const sectionIcons = [FileUser, PanelsTopLeft, BriefcaseBusiness, Code2];
-
 export default function Home() {
-  const [language, setLanguage] = useState<Language>("en");
-  const [activeSection, setActiveSection] = useState<SectionId>("profile");
-  const clickLock = useRef(0);
-  const t = copy[language];
+  const [lang, setLang] = useState<Language>("en");
+  const [active, setActive] = useState<SectionId>("home");
+  const [copied, setCopied] = useState(false);
+  const progressRef = useRef<HTMLDivElement>(null);
+  const timelineRef = useRef<HTMLDivElement>(null);
+  const glowRef = useRef<HTMLDivElement>(null);
+  const [openCase, setOpenCase] = useState<Project | null>(null);
+  const [theme, setTheme] = useState<Theme>("dark");
+  const [sound, setSound] = useState(false);
+  const soundRef = useRef(false);
+  const [showFab, setShowFab] = useState(false);
+  const t = copy[lang];
+  const u = uiCopy[lang];
 
+  // restore visitor preferences (theme, sound) after hydration
   useEffect(() => {
-    document.documentElement.lang = language;
-  }, [language]);
-
-  useEffect(() => {
-    const sections = sectionIds
-      .map((id) => document.getElementById(id))
-      .filter((section): section is HTMLElement => Boolean(section));
-
-    const observer = new IntersectionObserver(
-      (entries) => {
-        if (Date.now() < clickLock.current) return;
-        const visible = entries
-          .filter((entry) => entry.isIntersecting)
-          .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
-        if (visible) setActiveSection(visible.target.id as SectionId);
-      },
-      { rootMargin: "-16% 0px -56%", threshold: [0.08, 0.25, 0.5, 0.75] },
-    );
-
-    sections.forEach((section) => observer.observe(section));
-    return () => observer.disconnect();
+    const id = requestAnimationFrame(() => {
+      const th = loadTheme();
+      setTheme(th);
+      applyTheme(th);
+      const so = loadSound();
+      soundRef.current = so;
+      setSound(so);
+    });
+    const detach = attachSounds(() => soundRef.current);
+    return () => { cancelAnimationFrame(id); detach(); };
   }, []);
 
-  const navigateTo = (id: SectionId) => {
-    clickLock.current = Date.now() + 900;
-    setActiveSection(id);
-    document.getElementById(id)?.scrollIntoView({ behavior: "smooth", block: "start" });
+  const toggleTheme = () => {
+    const next: Theme = theme === "dark" ? "light" : "dark";
+    setTheme(next);
+    applyTheme(next);
+  };
+  const toggleSound = () => {
+    const next = !sound;
+    soundRef.current = next;
+    setSound(next);
+    saveSound(next);
+    if (next) blip("click");
   };
 
-  const changeLanguage = (nextLanguage: Language) => setLanguage(nextLanguage);
+  useEffect(() => { document.documentElement.lang = lang; }, [lang]);
+
+  // reveal-on-scroll
+  useEffect(() => {
+    const els = document.querySelectorAll<HTMLElement>("[data-reveal]:not(.in)");
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach((e) => { if (e.isIntersecting) { e.target.classList.add("in"); io.unobserve(e.target); } });
+    }, { rootMargin: "0px 0px -8% 0px", threshold: 0.12 });
+    els.forEach((el) => io.observe(el));
+    return () => io.disconnect();
+  }, [lang]);
+
+  // active section -> nav highlight + particle shape
+  useEffect(() => {
+    const io = new IntersectionObserver((entries) => {
+      const v = entries.filter((e) => e.isIntersecting).sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
+      if (!v) return;
+      const id = v.target.id as SectionId;
+      setActive(id);
+      window.dispatchEvent(new CustomEvent(STAGE_EVENT, { detail: stageFor[id] }));
+    }, { rootMargin: "-35% 0px -55% 0px" });
+    sections.forEach((id) => { const el = document.getElementById(id); if (el) io.observe(el); });
+    return () => io.disconnect();
+  }, []);
+
+  // scroll progress + timeline fill
+  useEffect(() => {
+    let raf = 0;
+    const update = () => {
+      raf = 0;
+      const h = document.documentElement;
+      progressRef.current?.style.setProperty("--p", String(h.scrollTop / Math.max(1, h.scrollHeight - h.clientHeight)));
+      const contact = document.getElementById("contact");
+      const inContact = contact ? contact.getBoundingClientRect().top < window.innerHeight * 0.7 : false;
+      setShowFab(h.scrollTop > window.innerHeight * 0.85 && !inContact);
+      const tl = timelineRef.current;
+      if (tl) {
+        const r = tl.getBoundingClientRect();
+        tl.style.setProperty("--fill", String(Math.min(1, Math.max(0, (window.innerHeight * 0.6 - r.top) / r.height))));
+      }
+    };
+    const onScroll = () => { if (!raf) raf = requestAnimationFrame(update); };
+    update();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", onScroll);
+    return () => { window.removeEventListener("scroll", onScroll); window.removeEventListener("resize", onScroll); cancelAnimationFrame(raf); };
+  }, []);
+
+  // cursor glow
+  useEffect(() => {
+    const el = glowRef.current;
+    if (!el || !window.matchMedia("(pointer: fine)").matches) return;
+    const onMove = (e: PointerEvent) => { el.style.transform = `translate(${e.clientX}px, ${e.clientY}px)`; el.style.opacity = "1"; };
+    window.addEventListener("pointermove", onMove, { passive: true });
+    return () => window.removeEventListener("pointermove", onMove);
+  }, []);
+
+  const copyEmail = async () => {
+    try { await navigator.clipboard.writeText(EMAIL); setCopied(true); setTimeout(() => setCopied(false), 1800); } catch { window.location.href = `mailto:${EMAIL}`; }
+  };
+  const go = (id: SectionId) => document.getElementById(id)?.scrollIntoView({ behavior: "smooth", block: "start" });
 
   return (
-    <main id="top">
-      <div className="siteShell">
-        <aside className="navRail" aria-label={t.navLabel}>
-          <button className="monogram" onClick={() => navigateTo("profile")} aria-label={`${t.name} profile`}>VN</button>
-          <div className="navList">
-            {sectionIds.map((id, index) => {
-              const Icon = sectionIcons[index];
-              const active = activeSection === id;
-              return (
-                <button key={id} className={active ? "active" : ""} onClick={() => navigateTo(id)} aria-current={active ? "location" : undefined}>
-                  <span className="navNumber">0{index + 1}</span>
-                  <Icon aria-hidden="true" />
-                  <span className="navText">{t.nav[index]}</span>
-                </button>
-              );
-            })}
-          </div>
-          <div className="languageSwitch" aria-label={t.languageLabel}>
-            {(["en", "ru", "el"] as Language[]).map((code) => (
-              <button key={code} className={language === code ? "active" : ""} onClick={() => changeLanguage(code)} aria-pressed={language === code}>
-                {code.toUpperCase()}
-              </button>
+    <>
+      <ParticleField />
+      <div className="cursorGlow" ref={glowRef} aria-hidden="true" />
+      <div className="noise" aria-hidden="true" />
+      <div className="progress" ref={progressRef} aria-hidden="true" />
+
+      <header className="topbar">
+        <button className="logo" onClick={() => go("home")} aria-label={`${t.name.join(" ")} — top`}>
+          <Image src="/img/avatar.webp" alt="" width={40} height={40} priority />
+        </button>
+        <nav aria-label="Sections">
+          {navSections.map((id) => (
+            <button key={id} className={active === id ? "on" : ""} onClick={() => go(id)} aria-current={active === id ? "location" : undefined}>
+              {t.nav[id]}
+            </button>
+          ))}
+        </nav>
+        <div className="topRight">
+          <button className="iconBtn" onClick={toggleSound} aria-pressed={sound} aria-label={sound ? u.soundOff : u.soundOn} title={sound ? u.soundOff : u.soundOn}>
+            {sound ? <Volume2 size={17} /> : <VolumeX size={17} />}
+          </button>
+          <button className="iconBtn" onClick={toggleTheme} aria-label={theme === "dark" ? u.themeLight : u.themeDark} title={theme === "dark" ? u.themeLight : u.themeDark}>
+            {theme === "dark" ? <Sun size={17} /> : <Moon size={17} />}
+          </button>
+          <button className="topCta" onClick={() => go("contact")}>{t.start}</button>
+          <div className="langs" role="group" aria-label="Language">
+            {(["en", "ru", "el"] as Language[]).map((c) => (
+              <button key={c} className={lang === c ? "on" : ""} onClick={() => setLang(c)} aria-pressed={lang === c}>{c.toUpperCase()}</button>
             ))}
           </div>
-        </aside>
+        </div>
+      </header>
 
-        <div className="resume">
-          <header className="resumeHeader navSection" id="profile">
-            <div className="identity">
-              <p className="overline">{t.role}</p>
-              <h1>{t.name}</h1>
-              <p className="summary">{t.summary}</p>
+      <main>
+        {/* HERO */}
+        <section className="hero" id="home">
+          <div className="wrap heroGrid">
+            <div className="heroInner">
+              <p className="pill"><i />{t.status}</p>
+              <h1 className="heroName" aria-label={t.name.join(" ")}>
+                {t.name.map((word, wi) => (
+                  <span className="word" key={`${lang}-${wi}`} aria-hidden="true">
+                    {[...word].map((ch, ci) => (
+                      <span className="char" key={ci} style={{ "--d": `${(wi * 8 + ci) * 0.035}s` } as CSSProperties}>{ch}</span>
+                    ))}
+                  </span>
+                ))}
+              </h1>
+              <p className="heroRole"><span className="slash">/</span> <Typewriter key={lang} words={t.roles} /></p>
+              <p className="heroSummary">{t.summary}</p>
+              <div className="heroCtas">
+                <button className="btn primary" onClick={() => go("contact")}><Sparkles size={17} />{t.start}<ArrowRight size={17} /></button>
+                <Magnetic className="btn ghost" href={pdf[lang].href} download={pdf[lang].file}><Download size={17} />{t.download}</Magnetic>
+              </div>
+              <div className="heroMeta">
+                <a href={GITHUB} target="_blank" rel="noreferrer"><Code2 size={15} />github.com/ViolettaNcl</a>
+                <a href={TELEGRAM} target="_blank" rel="noreferrer"><Send size={15} />@Violet111</a>
+                <span><MapPin size={15} />{t.location}</span>
+              </div>
             </div>
-            <div className="contactBlock" aria-label={t.contact}>
-              <span className="availability"><i />{t.status}</span>
-              <a href={`mailto:${EMAIL}`}><Mail size={15} />{EMAIL}</a>
-              <a href="https://github.com/ViolettaNcl" target="_blank" rel="noreferrer"><Code2 size={15} />github.com/ViolettaNcl</a>
-              <span><MapPin size={15} />{t.location}</span>
-              <a className="download" href={language === "ru" ? "/Violetta_Nicolaou_CV_RU_v2.pdf" : "/Violetta_Nicolaou_CV_EN_v2.pdf"} download={t.downloadFile}><Download size={15} />{t.download}</a>
-            </div>
-            <div className="highlights" aria-label="Candidate highlights">
-              {t.highlights.map((item) => <span key={item}><Check size={14} />{item}</span>)}
-            </div>
-          </header>
 
-          <div className="resumeGrid">
-            <aside className="sidebar">
-              <section className="cvSection navSection" id="skills">
-                <h2><Code2 />{t.skills}</h2>
-                <div className="skillGroups">
-                  {skillGroups.map((group) => (
-                    <div className="skillGroup" key={group.key}>
-                      <h3>{t.skillLabels[group.key]}</h3>
-                      <p>{group.items.join(" · ")}</p>
+            <div className="avatarStage">
+              <div className="avatarWrap" data-particle-anchor>
+                <span className="avatarRing" aria-hidden="true" />
+                <Image className="avatarImg" src="/img/avatar.webp" alt={t.name.join(" ")} width={900} height={900} priority sizes="(max-width: 900px) 60vw, 380px" />
+                <span className="orbit o1" aria-hidden="true">C#</span>
+                <span className="orbit o2" aria-hidden="true">Kotlin</span>
+                <span className="orbit o3" aria-hidden="true">React</span>
+                <span className="avatarBadge"><i />{t.status.split("·")[0].trim()}</span>
+              </div>
+            </div>
+          </div>
+          <button className="scrollHint" onClick={() => go("services")}><span>{t.scroll}</span><ArrowDown size={16} /></button>
+        </section>
+
+        {/* STATS */}
+        <section className="wrap stats" aria-label="Highlights">
+          {stats.map((s, i) => (
+            <div className="stat" key={i} data-reveal style={{ "--i": i } as CSSProperties}>
+              <strong><CountUp to={s.value} suffix={s.suffix} /></strong>
+              <span>{s.label[lang]}</span>
+            </div>
+          ))}
+        </section>
+
+        <div className="marquee" aria-hidden="true">
+          <div className="track">
+            {[...marquee, ...marquee].map((m, i) => <span key={i}>{m}<Sparkles size={14} /></span>)}
+          </div>
+        </div>
+
+        {/* SERVICES */}
+        <section className="wrap block" id="services">
+          <div className="blockHead" data-reveal>
+            <span className="kicker">01 — {t.servicesKicker}</span>
+            <h2>{t.servicesTitle}</h2>
+          </div>
+          <div className="services">
+            {services.map((s, i) => (
+              <article className="service" key={s.key} data-reveal style={{ "--i": i } as CSSProperties}>
+                <div className="serviceIcon">
+                  <Image src={s.icon} alt="" width={420} height={420} sizes="160px" />
+                </div>
+                <h3>{s.title[lang]}</h3>
+                <p>{s.text[lang]}</p>
+                <div className="tags">{s.tags.map((tg) => <span key={tg}>{tg}</span>)}</div>
+              </article>
+            ))}
+          </div>
+        </section>
+
+        {/* WORK */}
+        <section className="wrap block" id="work">
+          <div className="blockHead" data-reveal>
+            <span className="kicker">02 — {t.workKicker}</span>
+            <h2>{t.workTitle}</h2>
+          </div>
+          <div className="workGrid">
+            {projects.map((p, i) => (
+              <div className={`workWrap ${p.featured ? "featured" : ""}`} key={p.title} data-reveal style={{ "--i": i } as CSSProperties}>
+                <TiltCard className="work" style={{ "--accent": p.accent } as CSSProperties}>
+                  <button className="workMedia" onClick={() => setOpenCase(p)} aria-label={`${u.more}: ${p.title}`}>
+                    <Image src={p.image} alt={`${p.title} — screenshot`} width={1600} height={900} sizes="(max-width: 980px) 100vw, 60vw" />
+                    <span className="mediaHint"><Maximize2 size={15} />{u.more}</span>
+                    {p.badge && <Image className="appBadge" src={p.badge} alt="" width={360} height={360} sizes="72px" />}
+                  </button>
+                  <div className="workBody">
+                    <span className="projKicker">{p.kicker[lang]}</span>
+                    <h3>{p.title}</h3>
+                    <p>{p.summary[lang]}</p>
+                    <strong className="proof"><Check size={15} />{p.proof[lang]}</strong>
+                    <div className="tags">{p.stack.map((s) => <span key={s}>{s}</span>)}</div>
+                    <div className="projLinks">
+                      <button className="caseBtn" onClick={() => setOpenCase(p)}><Plus size={15} />{u.more}</button>
+                      {p.live && <a href={p.live} target="_blank" rel="noreferrer"><ExternalLink size={15} />{p.liveLabel?.[lang] ?? t.live}</a>}
+                      {p.repo && <a href={p.repo} target="_blank" rel="noreferrer"><Code2 size={15} />{t.code}</a>}
                     </div>
-                  ))}
-                </div>
-              </section>
+                  </div>
+                </TiltCard>
+              </div>
+            ))}
+          </div>
+        </section>
 
-              <section className="cvSection">
-                <h2><Languages />{t.languages}</h2>
-                <div className="languageList">
-                  {t.languageRows.map(([name, level]) => <p key={name}><span>{name}</span><strong>{level}</strong></p>)}
-                </div>
-              </section>
+        {/* REVIEWS */}
+        <section className="wrap block" id="reviews">
+          <div className="blockHead" data-reveal>
+            <span className="kicker">{u.reviewsKicker}</span>
+            <h2>{u.reviewsTitle}</h2>
+          </div>
+          <div className="reviews">
+            {testimonials.map((r, i) => (
+              <figure className="review" key={r.initials} data-reveal style={{ "--i": i, "--accent": r.accent } as CSSProperties}>
+                <Quote className="reviewMark" size={34} aria-hidden="true" />
+                <div className="stars" aria-label="5/5">★★★★★</div>
+                <blockquote>{r.quote[lang]}</blockquote>
+                <figcaption>
+                  <span className="reviewAvatar" aria-hidden="true">{r.initials}</span>
+                  <span><strong>{r.who[lang]}</strong><small>{r.project}</small></span>
+                </figcaption>
+              </figure>
+            ))}
+          </div>
+        </section>
 
-              <section className="cvSection">
-                <h2><Check />{t.strengths}</h2>
-                <ul className="strengthList">
-                  {t.strengthItems.map((item) => <li key={item}>{item}</li>)}
-                </ul>
-              </section>
+        {/* PROCESS */}
+        <section className="wrap block" id="process">
+          <div className="blockHead" data-reveal>
+            <span className="kicker">03 — {t.processKicker}</span>
+            <h2>{t.processTitle}</h2>
+          </div>
+          <div className="processCard" data-reveal>
+            <Image src="/img/process.webp" alt="" width={1800} height={773} sizes="(max-width: 1180px) 100vw, 1130px" className="processImg" />
+            <ol className="steps">
+              {processSteps.map((s, i) => (
+                <li key={i} style={{ "--i": i } as CSSProperties}>
+                  <span className="stepNum">0{i + 1}</span>
+                  <strong>{s.title[lang]}</strong>
+                  <p>{s.text[lang]}</p>
+                </li>
+              ))}
+            </ol>
+          </div>
+        </section>
 
-              <section className="cvSection education">
-                <h2><GraduationCap />{t.education}</h2>
-                <strong>{t.degree}</strong>
-                <p>{t.school}</p>
-                <small>{t.degreeText}</small>
-              </section>
-            </aside>
-
-            <div className="mainColumn">
-              <section className="cvSection navSection" id="projects">
-                <div className="sectionTitle">
-                  <h2><Code2 />{t.projects}</h2>
-                  <span>{t.portfolio}</span>
-                </div>
-                <div className="projectGrid">
-                  {projects.map((project) => (
-                    <article className="projectCard" key={project.title}>
-                      <div className="projectTop">
-                        <h3>{project.title}</h3>
-                        <div className="projectActions">
-                          {project.live ? <a href={project.live} target="_blank" rel="noreferrer" aria-label={`${project.title} ${t.live}`}><ExternalLink size={15} />{t.live}</a> : <span>{t.desktop}</span>}
-                          <a href={project.repo} target="_blank" rel="noreferrer" aria-label={`${project.title} ${t.source}`}><Code2 size={15} />{t.source}</a>
-                        </div>
-                      </div>
-                      <p>{project.summary[language]}</p>
-                      <strong className="proof">{project.proof[language]}</strong>
-                      <div className="tags">{project.stack.map((item) => <span key={item}>{item}</span>)}</div>
-                    </article>
-                  ))}
-                </div>
-              </section>
-
-              <section className="cvSection navSection" id="experience">
-                <h2><BriefcaseBusiness />{t.experience}</h2>
-                <div className="experienceList">
-                  <article>
-                    <div><h3>{t.development}</h3><span>{t.developmentDates}</span></div>
-                    <strong>{t.developmentOrg}</strong>
-                    <p>{t.developmentText}</p>
-                  </article>
-                  <article>
-                    <div><h3>{t.translator}</h3><span>{t.translatorDates}</span></div>
-                    <p>{t.translatorText}</p>
-                  </article>
-                  <article>
-                    <div><h3>{t.reception}</h3><span>{t.receptionDates}</span></div>
-                    <strong>{t.receptionOrg}</strong>
-                    <p>{t.receptionText}</p>
-                  </article>
-                </div>
-              </section>
+        {/* ABOUT + FOR RECRUITERS */}
+        <section className="wrap block" id="about">
+          <div className="aboutGrid">
+            <div className="aboutMedia" data-reveal>
+              <Image src="/img/avatar-laptop.webp" alt="" width={1600} height={900} sizes="(max-width: 980px) 100vw, 560px" />
+            </div>
+            <div className="aboutText" data-reveal style={{ "--i": 1 } as CSSProperties}>
+              <span className="kicker">04 — {t.aboutKicker}</span>
+              <h2>{t.aboutTitle}</h2>
+              <p>{t.aboutText}</p>
+              <div className="heroCtas">
+                <Magnetic className="btn primary" href={pdf[lang].href} download={pdf[lang].file}><Download size={17} />{t.download}</Magnetic>
+                <button className="btn ghost" onClick={() => go("contact")}>{t.hire}<ArrowRight size={16} /></button>
+              </div>
             </div>
           </div>
 
-          <footer>
-            <span>{t.footer}</span>
-            <div>
-              <a href={`mailto:${EMAIL}`}>{t.contact}<Mail size={14} /></a>
-              <a href="https://github.com/ViolettaNcl" target="_blank" rel="noreferrer">GitHub<ArrowUpRight size={14} /></a>
+          <h3 className="subHead" data-reveal>{t.expTitle}</h3>
+          <div className="timeline" ref={timelineRef}>
+            <div className="tlLine" aria-hidden="true"><i /></div>
+            {jobs.map((job, i) => (
+              <article className={`job ${job.current ? "current" : ""}`} key={job.role} data-reveal style={{ "--i": i } as CSSProperties}>
+                <span className="dot" aria-hidden="true" />
+                <div className="jobCard">
+                  <div className="jobTop">
+                    <div>
+                      <h3>{job.role}</h3>
+                      <p className="org">{job.org[lang]}</p>
+                    </div>
+                    <span className="dates">{job.current && <b>{t.now}</b>}{job.dates[lang]}</span>
+                  </div>
+                  <ul>{job.bullets[lang].map((b) => <li key={b}>{b}</li>)}</ul>
+                  {job.tags.length > 0 && <div className="tags">{job.tags.map((tg) => <span key={tg}>{tg}</span>)}</div>}
+                </div>
+              </article>
+            ))}
+          </div>
+
+          <h3 className="subHead" data-reveal>{t.skillsTitle}</h3>
+          <div className="bento">
+            {skills.slice(0, 4).map((g, i) => (
+              <div className={`bentoCard ${g.wide ? "wide" : ""}`} key={g.key} data-reveal style={{ "--i": i } as CSSProperties}>
+                <h3>{g.label[lang]}</h3>
+                <div className="chips">{g.items.map((s) => <span key={s}>{s}</span>)}</div>
+              </div>
+            ))}
+            <div className="bentoCard tall" data-reveal style={{ "--i": 4 } as CSSProperties}>
+              <h3><Languages size={17} />{t.langTitle}</h3>
+              <div className="langBars">
+                {t.langs.map(([name, level, pct]) => (
+                  <div key={name}>
+                    <p><span>{name}</span><b>{level}</b></p>
+                    <div className="bar"><i style={{ "--w": `${pct}%` } as CSSProperties} /></div>
+                  </div>
+                ))}
+              </div>
             </div>
-          </footer>
-        </div>
-      </div>
-    </main>
+            {skills.slice(4).map((g, i) => (
+              <div className={`bentoCard ${g.wide ? "wide" : ""}`} key={g.key} data-reveal style={{ "--i": i + 5 } as CSSProperties}>
+                <h3>{g.label[lang]}</h3>
+                <div className="chips">{g.items.map((s) => <span key={s}>{s}</span>)}</div>
+              </div>
+            ))}
+            <div className="bentoCard edu full" data-reveal style={{ "--i": 7 } as CSSProperties}>
+              <h3><GraduationCap size={17} />{t.eduTitle}</h3>
+              <strong>{t.degree}</strong>
+              <p>{t.school}</p>
+              <small>{t.degreeText}</small>
+            </div>
+          </div>
+        </section>
+
+        {/* PLAYGROUND */}
+        <section className="wrap block" id="playground">
+          <div className="blockHead" data-reveal>
+            <span className="kicker">05 — {termCopy[lang].kicker}</span>
+            <h2>{termCopy[lang].title}</h2>
+          </div>
+          <div data-reveal><Terminal key={lang} lang={lang} onHire={() => go("contact")} /></div>
+        </section>
+
+        {/* FAQ */}
+        <section className="wrap block" id="faq">
+          <div className="faqGrid">
+            <div className="blockHead" data-reveal>
+              <span className="kicker">{u.faqKicker}</span>
+              <h2>{u.faqTitle}</h2>
+              <button className="btn primary" onClick={() => go("contact")}><MessageCircle size={17} />{u.write}</button>
+            </div>
+            <div className="faqList">
+              {faq.map((f, i) => (
+                <details className="faqItem" key={i} data-reveal style={{ "--i": i } as CSSProperties}>
+                  <summary><span>{f.q[lang]}</span><Plus size={18} aria-hidden="true" /></summary>
+                  <p>{f.a[lang]}</p>
+                </details>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* CONTACT */}
+        <section className="wrap contact" id="contact">
+          <div className="contactGrid">
+            <div className="contactIntro" data-reveal>
+              <span className="kicker">06 — {t.contactKicker}</span>
+              <h2>{t.contactTitle}</h2>
+              <p>{t.contactText}</p>
+              <div className="quickLinks">
+                <button className="qLink" onClick={copyEmail}>
+                  {copied ? <Check size={17} /> : <Copy size={17} />}<span>{EMAIL}</span>
+                </button>
+                <a className="qLink" href={TELEGRAM} target="_blank" rel="noreferrer"><Send size={17} /><span>t.me/Violet111</span><ExternalLink size={15} /></a>
+                <a className="qLink" href={GITHUB} target="_blank" rel="noreferrer"><Code2 size={17} /><span>github.com/ViolettaNcl</span><ExternalLink size={15} /></a>
+                <a className="qLink" href={pdf[lang].href} download={pdf[lang].file}><Download size={17} /><span>{t.download} · PDF</span></a>
+              </div>
+            </div>
+            <div data-reveal style={{ "--i": 1 } as CSSProperties}><ContactForm lang={lang} /></div>
+          </div>
+        </section>
+      </main>
+
+      <button className={`fab ${showFab ? "show" : ""}`} onClick={() => go("contact")} aria-hidden={!showFab} tabIndex={showFab ? 0 : -1}>
+        <MessageCircle size={19} /><span>{u.write}</span>
+      </button>
+
+      {openCase && (
+        <CaseModal project={openCase} lang={lang} onClose={() => setOpenCase(null)} liveLabel={t.live} codeLabel={t.code} />
+      )}
+
+      <footer className="wrap footer">
+        <span>© 2026 · {t.footer}</span>
+      </footer>
+    </>
   );
 }
