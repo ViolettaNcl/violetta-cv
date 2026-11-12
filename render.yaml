@@ -1,0 +1,27 @@
+# Render Blueprint — free Static Site (no sleeping, served from a CDN).
+# Render → New → Blueprint → select this repository → Deploy Blueprint.
+services:
+  - type: web
+    name: violetta-cv
+    runtime: static
+    branch: main
+    autoDeploy: true
+    buildCommand: npm ci && npm run build
+    staticPublishPath: ./out
+    pullRequestPreviewsEnabled: false
+    envVars:
+      - key: NODE_VERSION
+        value: "22"
+    headers:
+      - path: /*
+        name: X-Content-Type-Options
+        value: nosniff
+      - path: /*
+        name: Referrer-Policy
+        value: strict-origin-when-cross-origin
+      - path: /*
+        name: X-Frame-Options
+        value: SAMEORIGIN
+      - path: /_next/static/*
+        name: Cache-Control
+        value: public, max-age=31536000, immutable

@@ -44,7 +44,8 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
     <html lang="en">
       <body>
         {children}
-        <Analytics />
+        {/* Vercel Web Analytics only exists on Vercel; elsewhere its script would 404. */}
+        {process.env.VERCEL ? <Analytics /> : null}
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }} />
       </body>
     </html>
